@@ -1,0 +1,15 @@
+.header {
+    width: 400px;
+}
+
+.page-list {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.page-list a {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+}

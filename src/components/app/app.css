@@ -1,0 +1,10 @@
+.app {
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+body {
+    background: blue url('background-app.jpg') center center no-repeat;
+    background-size: cover;
+    height: 1500px;
+}
