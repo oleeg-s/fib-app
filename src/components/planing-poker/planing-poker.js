@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
+import StepOne from './step-one';
+import StepTwo from './step-two';
+import StepThree from './step-three';
+
 import './planing-poker.css';
 
-export default class Container extends Component {
+export default class PlaningPoker extends Component {
 
     state = {
-        value: ''
+        value: '',
+        numbers: ''
     }
 
     addValue = (value) => {
@@ -13,7 +18,11 @@ export default class Container extends Component {
         })
     }
 
-
+    addNumbers = (numbers) => {
+        this.setState({
+            numbers
+        })
+    }
 
     fib = (n) => {
         if (!n) {
@@ -23,100 +32,39 @@ export default class Container extends Component {
         let a = 1;
         let b = 1;
         let res = [1];
-        for (let i = 3; i <= n; i++) {
-          let c = a + b;
-          a = b;
-          b = c;
-          res.push(b)
-        }
+
+            for (let i = 3; i <= n; i++) {
+                let c = a + b;
+                a = b;
+                b = c;
+                res.push(b)
+            }
+
         return res;
-      }
+    }
+
+    findMedium = (numbers) => {
+        if (!this.state.numbers) {
+            return
+        }
+        const res = numbers.split(',').sort((a, b) => a - b)
+
+        return res[1]
+    }
 
     render() {
+        const {value, numbers} = this.state;
 
-        const view = (!this.state.value) ? <StepOne value={this.state.value} onChange={this.onChange} onAdd={this.addValue}/> 
-        : <StepTwo showFib={this.fib(this.state.value).join(' ')}/>
+        const showStepOne = (!value) ? <StepOne value={value} onChange={this.onChange} onAdd={this.addValue}/> : null;
+        const showStepTwo = (value && !numbers) ? <StepTwo showFib={this.fib(value)} onAdd={this.addNumbers}/> : null;
+        const showStepThree = (!numbers) ? null : <StepThree result={this.findMedium(numbers)}/>;
 
         return (
             <div className='container'>
-                {view}
+                {showStepOne}
+                {showStepTwo}
+                {showStepThree}
             </div>
-
-        )
-    }
-}
-
-class StepOne extends Component {
-
-    state = {
-        value: ''
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        this.props.onAdd(this.state.value)
-        this.setState({
-            value: ''
-        })
-    }
-
-    onChange = (e) => {
-        this.setState({
-            value: e.target.value
-        })
-    }
-
-    render() {
-        const {value} = this.state;
-
-        return (
-            <div>
-                <form className='info-block'
-                    onSubmit={this.onSubmit}>
-                    <span>Select a number</span>
-                    <input 
-                        placeholder='type here...'
-                        onChange={this.onChange}
-                        value={value}/>
-                    <button
-                        type='submit'>show fib</button>
-                </form>
-            </div>
-        )
-    }
-}
-
-class StepTwo extends Component {
-
-    state = {
-        value: ''
-    }
-
-    onChange = (e) => {
-        this.setState({
-            value: e.target.value
-        })
-    }
-
-    render() {
-
-        const {value} = this.state;
-        const {showFib} = this.props;
-
-        return (
-            <div>
-            <form className='info-block'
-                onSubmit={this.onSubmit}>
-                <span>Select any 3 numbers from fib list</span>
-                <span>{showFib}</span>
-                <input 
-                    placeholder='type here...'
-                    onChange={this.onChange}
-                    value={value}/>
-                <button
-                    type='submit'>show fib</button>
-            </form>
-        </div>
         )
     }
 }
