@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .info-block {
@@ -22,6 +23,14 @@
     font-size: 48px;
 }
 
+.info-text {
+    font-size: 18px;
+}
+
+.small {
+    font-size: 12px;
+}
+
 .red {
     color: red;
 }
@@ -31,22 +40,17 @@
     justify-content: space-between;
     flex-direction: column;
     width: 200px;
-    height: 100px;
 }
 
-.input-small {
-    width: 200px;
-    margin-bottom: 5px;
-}
-
-button {
+.button {
     width: 130px;
     height: 40px;
     font-size: 16px;
     font-weight: 700;
-}
-
-input {
-    width: 200px;
-    height: 30px;
+    color: #fff;
+    margin-top: 10px;
+    border-radius: 5px;
+    border:solid 3px #fff;
+    outline: none;
+    background-color: transparent;
 }

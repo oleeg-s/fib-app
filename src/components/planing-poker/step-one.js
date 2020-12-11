@@ -1,22 +1,39 @@
 import React, {Component} from 'react';
+import Input from '../input/input';
+import Spinner from '../spinner/spinner';
+
 import './planing-poker.css';
 
 export default class StepOne extends Component {
 
     state = {
         value: '',
-        loading: false
+        loading: false,
+        disabled: false,
+        error: false
     }
 
     onSubmit = (e) => {
         e.preventDefault();
+
         this.setState({
-            loading: true
+            error: false
         })
-        setTimeout(() => {
-            this.props.onAdd(this.state.value)
-        }, 1000)
         
+        if (this.state.value && this.state.value <= 15) {
+            this.setState({
+                loading: true,
+                disabled: true
+            })
+            setTimeout(() => {
+                this.props.onAdd(this.state.value)
+                this.props.changeStep()
+            }, 500)
+        } else {
+            this.setState({
+                error: true
+            })
+        }
     }
 
     onChange = (e) => {
@@ -26,9 +43,10 @@ export default class StepOne extends Component {
     }
 
     render() {
-        const {value, loading} = this.state;
+        const {value, loading, error} = this.state;
         
-        const loadingMessage = loading ? <div> loading... </div> : null;
+        const loadingMessage = loading ? <Spinner/> : null;
+        const errorMessage = error ? <div className='info-text red'> please  select a number from 1 to 15 </div> : null;
 
         return (
             <div>
@@ -36,13 +54,17 @@ export default class StepOne extends Component {
                     className='info-block'
                     onSubmit={this.onSubmit}>
                     <span>Select a number</span>
-                    <input 
-                        type='number'
-                        placeholder='type here...'
+                    <Input 
                         onChange={this.onChange}
-                        value={value}/>
+                        value={value}
+                        disabled={this.state.disabled}
+                    />
+                    {errorMessage}
                     <button
-                        type='submit'>show fib
+                        type='submit'
+                        className='button'
+                        disabled={this.state.disabled}>
+                        show fib
                     </button>
                     {loadingMessage}
                 </form>

@@ -9,7 +9,8 @@ export default class PlaningPoker extends Component {
 
     state = {
         value: '',
-        numbers: ''
+        numbers: '',
+        step: 1
     }
 
     addValue = (value) => {
@@ -22,6 +23,22 @@ export default class PlaningPoker extends Component {
         this.setState({
             numbers
         })
+    }
+
+    changeStep = () => {
+        const {step} = this.state;
+        this.setState({
+            step: step + 1
+        })
+    }
+
+    prevStep = () => {
+        const {step} = this.state;
+        if (step > 1) {
+            this.setState({
+                step: step - 1
+            })
+        }
     }
 
     fib = (n) => {
@@ -53,17 +70,22 @@ export default class PlaningPoker extends Component {
     }
 
     render() {
-        const {value, numbers} = this.state;
+        const {value, numbers, step} = this.state;
 
-        const showStepOne = (!value) ? <StepOne value={value} onChange={this.onChange} onAdd={this.addValue}/> : null;
-        const showStepTwo = (value && !numbers) ? <StepTwo showFib={this.fib(value)} onAdd={this.addNumbers}/> : null;
-        const showStepThree = (!numbers) ? null : <StepThree result={this.findMedium(numbers)}/>;
+        const showStepOne = (step === 1) ? <StepOne value={value} onChange={this.onChange} onAdd={this.addValue} changeStep={this.changeStep}/> : null;
+        const showStepTwo = (step === 2) ? <StepTwo showFib={this.fib(value)} onAdd={this.addNumbers} changeStep={this.changeStep}/> : null;
+        const showStepThree = (step === 3) ? <StepThree result={this.findMedium(numbers)}/> : null;
 
         return (
             <div className='container'>
                 {showStepOne}
                 {showStepTwo}
                 {showStepThree}
+                <button 
+                    className='button'
+                    onClick={this.prevStep}>
+                    back
+                </button>
             </div>
         )
     }
